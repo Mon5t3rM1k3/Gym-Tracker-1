@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>2-Week Strength + Calisthenics</title>
+
+<style>
+
+:root{
+    --bg:#f4f6f8;
+    --card:#ffffff;
+    --text:#17202a;
+    --muted:#667085;
+    --border:#e4e7ec;
+    --primary:#2563eb;
+    --primary-light:#eff6ff;
+    --green:#16a34a;
+    --danger:#dc2626;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+}
+
+/* HEADER */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:#111827;
+    color:white;
+    padding:16px;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+
+header h1{
+    margin:0;
+    font-size:21px;
+}
+
+header p{
+    margin:5px 0 0;
+    color:#cbd5e1;
+    font-size:13px;
+}
+
+/* TABS */
+
+.tabs{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
+}
+
+.tab{
+    flex:1;
+    border:1px solid #475569;
+    background:#1f2937;
+    color:white;
+    padding:10px 8px;
+    border-radius:9px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.tab.active{
+    background:white;
+    color:#111827;
+}
+
+/* MAIN */
+
+main{
+    max-width:850px;
+    margin:auto;
+    padding:14px;
+}
+
+.week{
+    display:none;
+}
+
+.week.active{
+    display:block;
+}
+
+.week-title{
+    font-size:22px;
+    font-weight:800;
+    margin:8px 0 14px;
+}
+
+/* NOTES */
+
+.note{
+    background:var(--primary-light);
+    border:1px solid #bfdbfe;
+    padding:13px 14px;
+    border-radius:12px;
+    font-size:13px;
+    line-height:1.5;
+    margin-bottom:14px;
+}
+
+/* DAY */
+
+.day{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    margin:14px 0;
+    overflow:hidden;
+    box-shadow:0 2px 7px rgba(16,24,40,.05);
+}
+
+.day-header{
+    padding:14px 15px;
+    background:#fafafa;
+    border-bottom:1px solid var(--border);
+}
+
+.day-header h2{
+    margin:0;
+    font-size:18px;
+}
+
+.day-progress{
+    margin-top:8px;
+    font-size:12px;
+    color:var(--muted);
+}
+
+.progress{
+    height:7px;
+    background:#e5e7eb;
+    border-radius:99px;
+    overflow:hidden;
+    margin-top:6px;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:var(--green);
+    transition:.2s;
+}
+
+/* SECTION */
+
+.section-title{
+    padding:11px 15px 7px;
+    color:var(--primary);
+    font-size:13px;
+    font-weight:800;
+}
+
+/* EXERCISE */
+
+.exercise{
+    padding:13px 15px;
+    border-bottom:1px solid #f0f2f5;
+}
+
+.exercise:last-child{
+    border-bottom:none;
+}
+
+.exercise-name{
+    font-weight:700;
+    font-size:14px;
+}
+
+.target{
+    display:block;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:3px;
+}
+
+/* TIMER */
+
+.timer-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:9px;
+}
+
+.timer-row input{
+    width:21px;
+    height:21px;
+    accent-color:var(--green);
+}
+
+.timer-row label{
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* RECORD BOX */
+
+.record{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+    margin-top:10px;
+}
+
+.record-box{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.record-box span{
+    font-size:11px;
+    color:var(--muted);
+    font-weight:700;
+}
+
+.record-box input{
+    width:100%;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:8px;
+    padding:9px 10px;
+    font-size:14px;
+    outline:none;
+}
+
+.record-box input:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 2px rgba(37,99,235,.1);
+}
+
+/* SAVED */
+
+.saved{
+    font-size:11px;
+    color:var(--green);
+    margin-top:5px;
+    min-height:14px;
+}
+
+/* ACTIONS */
+
+.actions{
+    display:flex;
+    gap:8px;
+    margin:15px 0 25px;
+}
+
+button.action{
+    border:1px solid var(--border);
+    background:white;
+    color:var(--text);
+    padding:9px 13px;
+    border-radius:9px;
+    font-weight:650;
+    cursor:pointer;
+}
+
+button.danger{
+    color:var(--danger);
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    header{
+        padding:14px;
+    }
+
+    header h1{
+        font-size:19px;
+    }
+
+    .tab{
+        font-size:12px;
+    }
+
+    main{
+        padding:10px;
+    }
+
+    .exercise{
+        padding:13px;
+    }
+
+    .record{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>2-Week Strength + Calisthenics</h1>
+
+<p>
+Record your actual reps and weights.
+Timer exercises use a checkbox.
+</p>
+
+<div class="tabs">
+
+<button
+class="tab active"
+id="weekBtn1"
+onclick="showWeek(1)">
+Week 1 · Calisthenics
+</button>
+
+<button
+class="tab"
+id="weekBtn2"
+onclick="showWeek(2)">
+Week 2 · Weights
+</button>
+
+</div>
+
+</header>
+
+
+<main>
+
+<div id="week1" class="week active"></div>
+
+<div id="week2" class="week"></div>
+
+
+<div class="day">
+
+<div class="day-header">
+
+<h2>Daily Back Mobility & Recovery</h2>
+
+<div class="day-progress">
+
+<span id="mobilityProgress">
+0 / 6 completed
+</span>
+
+<div class="progress">
+<div
+id="mobilityBar"
+class="progress-bar">
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div id="mobilityExercises"></div>
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="action"
+onclick="resetCurrentWeek()">
+Reset Current Week
+</button>
+
+<button
+class="action danger"
+onclick="resetAll()">
+Reset All Data
+</button>
+
+</div>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   WORKOUT DATA
+========================================================= */
+
+const weeks = {
+
+1: {
+
+title:"WEEK 1 – CALISTHENICS",
+
+note:`
+<b>Progression Rules</b><br>
+• Add +2 total reps per exercise each week.<br>
+• Or use slower tempo / pauses.<br>
+• Hit the top reps on both sets → increase 2.5 kg where applicable.<br>
+• If Set 2 drops badly → keep the same weight.<br>
+• Perform 1 warm-up set before working sets.
+`,
+
+days:[
+
+{
+name:"Day 1 – Cardio",
+
+exercises:[
+
+timer("Sprint Cycle","Use your timer application"),
+timer("Skipping","Use your timer application"),
+exercise("Rowing","10 min"),
+timer("Battle Ropes","Use your timer application"),
+exercise("Farmers Walk","3 sets — 17.5 kg, 20 kg, 22.5 kg"),
+exercise("Plank","1:30 min"),
+exercise("Vacuum",""),
+exercise("Stretch","")
+
+]},
+
+{
+name:"Day 2 – Legs (Calisthenics)",
+
+exercises:[
+
+exercise("BW Squats (Tempo)","100 — 75"),
+exercise("DB Walking Lunges","3×12/leg — 30, 30, 30 — 5, 7.5, 10 kg"),
+exercise("DB/BB RDL","20, 20, 20 — 2.5, 5, 5 kg"),
+exercise("Stand/Sit Calf Raise","2/2×20 — 20,20 / 20,20 (25 kg plate)"),
+exercise("Static Standing Calf Raise","1:30 min"),
+exercise("Vacuum",""),
+exercise("Stretch","")
+
+]},
+
+{
+name:"Day 3 – Push (Calisthenics)",
+
+exercises:[
+
+exercise("Decline Push-Ups","3 × Max − 2 — 12, 15, 15"),
+exercise("Wide Push-Ups (Slow Tempo)","3 × Max − 2 — 15, 10, 10"),
+exercise("Decline Pike Push-Ups","3 × Max − 2 — 12, 10, 12"),
+exercise("Parallel Bar Dips","15, 12, 10"),
+exercise("Bench Dips","20, 20, 20 — BW"),
+exercise("Squat Rack Triceps Extension","Level 8 — 15, 15, 15"),
+exercise("Side Leg Raises","3 × 10–12 — 10, 10, 10"),
+exercise("Vacuum",""),
+exercise("Stretch","")
+
+]},
+
+{
+name:"Day 4 – Pull (Calisthenics)",
+
+exercises:[
+
+exercise("Pull-Ups (Wide/Neutral)","3 × Max − 2 — 8, 8, 6"),
+exercise("Australian Pull-Ups","Level 12 — 3 × Max − 2 — 8, 8, 7"),
+exercise("DB Shoulder Row","Heavy bar — 3×10–12 — 10, 10, 10"),
+exercise("Chin-Up Hold (Top)","3 × Max"),
+exercise("Squat Rack Biceps Curl / Reverse","Level 8 — 2/2 — 10,10 / 10,10"),
+exercise("Dead Hang — Active/Passive","2 sets each"),
+exercise("Decline Leg Raise","3 × 12–15 — 15, 15, 15"),
+exercise("Vacuum",""),
+exercise("Stretch","")
+
+]},
+
+{
+name:"Day 5 – Cardio",
+
+exercises:[
+
+timer("Sprint Cycle","Use your timer application"),
+timer("Skipping","Use your timer application"),
+exercise("Rowing","10 min"),
+timer("Battle Ropes","Use your timer application"),
+exercise("Farmers Walk","17.5, 20, 22.5 kg"),
+exercise("Vacuum",""),
+exercise("Stretch","")
+
+]},
+
+{
+name:"Day 6 – Shoulders (Weights)",
+
+exercises:[
+
+exercise("DB / BB Overhead Press","2 × 6–8 — 20, 22.5 kg"),
+exercise("Machine Lateral Raise","2 × 12–15 — 10, 15 kg"),
+exercise("DB Lateral Raise","2 × 15–20"),
+exercise("DB / BB Front Raise","2 × 15–20"),
+exercise("Cable Rear Delt Fly (Slow Tempo)","2 × 12–15 — 5, 5 kg"),
+exercise("DB Rotator Cuff","2 × 15–20"),
+exercise("Russian Twist","3 × 12"),
+exercise("Vacuum",""),
+exercise("Stretch","")
+
+]}
+
+]},
+
+2: {
+
+title:"WEEK 2 – WEIGHTS",
+
+note:`
+<b>Progression Rules</b><br>
+• Stay within the prescribed rep range.<br>
+• Hit the top of the range on all working sets → increase weight.<br>
+• If Set 2 drops badly → keep the same weight.<br>
+• If form breaks → do not increase weight.<br>
+• Perform the listed warm-up before the workout.
+`,
+
+days:[
+
+{
+name:"Day 1 – Cardio",
+
+exercises:[
+
+timer("Sprint Cycle","Use your timer application"),
+timer("Skipping","Use your timer application"),
+exercise("Rowing","10 min"),
+timer("Battle Ropes","Use your timer application"),
+exercise("Farmers Walk","17.5 kg · 20 kg · 15 kg"),
+exercise("Vacuum",""),
+exercise("Stretch","")
+
+]},
+
+{
+name:"Day 2 – Legs",
+
+warmup:[
+
+exercise("Bodyweight Squats","×15"),
+exercise("Leg Swings","×10/side"),
+exercise("Hip Circles","×10/side"),
+exercise("Walking Lunges","×10/side")
+
+],
+
+exercises:[
+
+exercise("Barbell Back Squat","4×5 — 5,5,5,5 — 10,20,30,40 kg"),
+exercise("Romanian Deadlift","3×6–8 — 8,8,8 — blank,10,15 kg"),
+exercise("Dumbbell Walking Lunges","3×10–12/leg — 12,12,10 — 5,10,15 kg"),
+exercise("Leg Curl","2×10–12 — 12,12 — 20,25 kg"),
+exercise("Calf Raise","3×12–15 — 15,15,15 — BW,BW,BW"),
+exercise("Hanging Leg Raise","3×10–15 — 10,10,10 — BW")
+
+]},
+
+{
+name:"Day 3 – Back + Biceps",
+
+warmup:[
+
+exercise("Cat-Cow","×10"),
+exercise("Band Rows","×15"),
+exercise("Scapular Pull-ups","×10 — 8"),
+exercise("Light Lat Pulldown","×12")
+
+],
+
+exercises:[
+
+exercise("Pull-ups","3×6–8 — 8,8,6 — BW"),
+exercise("Seated Machine Row","3×8–12 — 12,12,12 — 30,40,50 kg"),
+exercise("Shoulder Row","2×10–12 — 12,12 — blank,10 kg"),
+exercise("Deadlift","3×3–5 — 5,5,3 — 40,60,80 kg"),
+exercise("Preacher Curl","3×12–15"),
+exercise("BB Curl","3×12–15"),
+exercise("DB Hammer Curl","3×12–15"),
+exercise("Plank","3 × 45–60 sec"),
+exercise("Vacuum",""),
+exercise("Stretch","")
+
+]},
+
+{
+name:"Day 4 – Chest + Triceps",
+
+warmup:[
+
+exercise("Arm Circles","×15"),
+exercise("Push-ups","×10"),
+exercise("Band Pull-aparts","×15"),
+exercise("Light Dumbbell Press","×12")
+
+],
+
+exercises:[
+
+exercise("Incline Dumbbell Press","4×6–8 — 8,8,8,6 — 20,25,30,35 kg"),
+exercise("Barbell Bench Press","3×5–6 — 6,6,5 — 30,40,50 kg"),
+exercise("Low-to-High DB Fly","3×12–15 — 15,12,12 — 5,7.5,7.5 kg"),
+exercise("Decline Push-ups","2×10–15 — 12,12 — BW"),
+exercise("Dumbbell Pullover","2×10–12 — 12,12 — 15,17.5 kg"),
+exercise("Skull Crushers","3×10–12"),
+exercise("Cable Pushdown","3×10–12"),
+exercise("Cable Crunch","3×12–15 — 15,15,12 — 30,40,50 kg"),
+exercise("Vacuum",""),
+exercise("Stretch","")
+
+]},
+
+{
+name:"Day 5 – Cardio",
+
+exercises:[
+
+timer("Sprint Cycle","Use your timer application"),
+timer("Skipping","Use your timer application"),
+exercise("Rowing","10 min"),
+timer("Battle Ropes","Use your timer application"),
+exercise("Farmers Walk","17.5 kg · 20 kg · 15 kg"),
+exercise("Vacuum",""),
+exercise("Stretch","")
+
+]},
+
+{
+name:"Day 6 – Shoulders",
+
+warmup:[
+
+exercise("Arm Circles","×15"),
+exercise("Band External Rotations","×15"),
+exercise("Wall Slides","×10"),
+exercise("Pike Push-ups","×12")
+
+],
+
+exercises:[
+
+exercise("Overhead Press","4×5–6 — 6,5,5,5 — 10,20,25,30 kg"),
+exercise("Lateral Raise","3×15–20 — 20,20,20 — 2.5,2.5,2.5 kg"),
+exercise("Rear Delt Fly","3×15–20 — 20,20,20 — 2.5,2.5,2.5 kg"),
+exercise("Face Pull","2×12–15 — 15,12,12 — 15,20,25 kg"),
+exercise("Russian Twist","3×12–15"),
+exercise("Vacuum",""),
+exercise("Stretch","")
+
+]}
+
+]}
+
+};
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function exercise(name,target){
+
+    return {
+        name:name,
+        target:target || "",
+        timer:false
+    };
+
+}
+
+
+function timer(name,target){
+
+    return {
+        name:name,
+        target:target || "",
+        timer:true
+    };
+
+}
+
+
+/* =========================================================
+   RENDER WEEK
+========================================================= */
+
+function renderWeek(weekNumber){
+
+    const container =
+        document.getElementById("week"+weekNumber);
+
+    const data = weeks[weekNumber];
+
+    let html = "";
+
+    html += `
+        <h2 class="week-title">
+            ${data.title}
+        </h2>
+
+        <div class="note">
+            ${data.note}
+        </div>
+    `;
+
+    data.days.forEach((day,dayIndex)=>{
+
+        const dayId =
+            "w"+weekNumber+"d"+(dayIndex+1);
+
+        const timerCount =
+            countTimers(day);
+
+        html += `
+        <div class="day" data-day="${dayId}">
+
+            <div class="day-header">
+
+                <h2>${day.name}</h2>
+
+                ${
+                    timerCount > 0
+                    ?
+                    `
+                    <div class="day-progress">
+
+                        <span class="progress-text">
+                            0 / ${timerCount} timer exercises completed
+                        </span>
+
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+        `;
+
+
+        if(day.warmup){
+
+            html += `
+                <div class="section-title">
+                    Warm-up · 5–8 min
+                </div>
+            `;
+
+            day.warmup.forEach(
+                (ex,index)=>{
+
+                    html += renderExercise(
+                        ex,
+                        `${dayId}warm${index}`
+                    );
+
+                }
+            );
+
+            html += `
+                <div class="section-title">
+                    Workout
+                </div>
+            `;
+
+        }
+
+
+        day.exercises.forEach(
+            (ex,index)=>{
+
+                html += renderExercise(
+                    ex,
+                    `${dayId}e${index}`
+                );
+
+            }
+        );
+
+
+        html += `</div>`;
+
+    });
+
+
+    container.innerHTML = html;
+
+    attachListeners(container);
+
+}
+
+
+/* =========================================================
+   RENDER EXERCISE
+========================================================= */
+
+function renderExercise(ex,id){
+
+    if(ex.timer){
+
+        return `
+        <div class="exercise">
+
+            <div class="exercise-name">
+                ${ex.name}
+            </div>
+
+            ${
+                ex.target
+                ?
+                `<span class="target">
+                    ${ex.target}
+                </span>`
+                :
+                ""
+            }
+
+            <div class="timer-row">
+
+                <input
+                    type="checkbox"
+                    id="${id}"
+                    data-timer="true"
+                >
+
+                <label for="${id}">
+                    Completed
+                </label>
+
+            </div>
+
+        </div>
+        `;
+
+    }
+
+
+    return `
+    <div class="exercise">
+
+        <div class="exercise-name">
+            ${ex.name}
+        </div>
+
+        ${
+            ex.target
+            ?
+            `<span class="target">
+                Target: ${ex.target}
+            </span>`
+            :
+            ""
+        }
+
+        <div class="record">
+
+            <div class="record-box">
+
+                <span>REPS</span>
+
+                <input
+                    type="text"
+                    id="${id}-reps"
+                    placeholder="e.g. 12, 10, 8"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="record-box">
+
+                <span>WEIGHT</span>
+
+                <input
+                    type="text"
+                    id="${id}-weight"
+                    placeholder="e.g. 20, 25, 30 kg"
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </div>
+
+        <div
+            class="saved"
+            id="${id}-saved">
+        </div>
+
+    </div>
+    `;
+
+}
+
+
+/* =========================================================
+   COUNT TIMER EXERCISES
+========================================================= */
+
+function countTimers(day){
+
+    let count = 0;
+
+    day.exercises.forEach(ex=>{
+
+        if(ex.timer){
+            count++;
+        }
+
+    });
+
+    return count;
+
+}
+
+
+/* =========================================================
+   ATTACH LISTENERS
+========================================================= */
+
+function attachListeners(container){
+
+    const inputs =
+        container.querySelectorAll(
+            "input"
+        );
+
+
+    inputs.forEach(input=>{
+
+        const saved =
+            localStorage.getItem(
+                "workout_"+input.id
+            );
+
+
+        if(input.type === "checkbox"){
+
+            if(saved === "true"){
+                input.checked = true;
+            }
+
+
+            input.addEventListener(
+                "change",
+                ()=>{
+
+                    localStorage.setItem(
+                        "workout_"+input.id,
+                        input.checked
+                    );
+
+                    updateProgress();
+
+                }
+            );
+
+        }
+
+
+        else{
+
+            if(saved !== null){
+
+                input.value = saved;
+
+                showSaved(input.id);
+
+            }
+
+
+            input.addEventListener(
+                "input",
+                ()=>{
+
+                    localStorage.setItem(
+                        "workout_"+input.id,
+                        input.value
+                    );
+
+                    showSaved(input.id);
+
+                }
+            );
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   SAVED INDICATOR
+========================================================= */
+
+function showSaved(id){
+
+    const saved =
+        document.getElementById(
+            id.replace(
+                /-(reps|weight)$/,
+                "-saved"
+            )
+        );
+
+    if(saved){
+        saved.textContent =
+            "✓ Saved automatically";
+    }
+
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+function updateProgress(){
+
+    document
+        .querySelectorAll(".day")
+        .forEach(day=>{
+
+            const boxes =
+                day.querySelectorAll(
+                    'input[type="checkbox"][data-timer="true"]'
+                );
+
+            if(!boxes.length){
+                return;
+            }
+
+            let completed = 0;
+
+            boxes.forEach(box=>{
+
+                if(box.checked){
+                    completed++;
+                }
+
+            });
+
+            const percent =
+                (completed / boxes.length) * 100;
+
+
+            const text =
+                day.querySelector(
+                    ".progress-text"
+                );
+
+            const bar =
+                day.querySelector(
+                    ".progress-bar"
+                );
+
+
+            if(text){
+
+                text.textContent =
+                    completed +
+                    " / " +
+                    boxes.length +
+                    " timer exercises completed";
+
+            }
+
+
+            if(bar){
+
+                bar.style.width =
+                    percent + "%";
+
+            }
+
+        });
+
+
+    updateMobilityProgress();
+
+}
+
+
+/* =========================================================
+   MOBILITY
+========================================================= */
+
+const mobility = [
+
+["Cat-Cow","1 min"],
+["Child's Pose","1 min"],
+["Bird Dog","2 sets"],
+["McGill Curl-Up","2 sets"],
+["Glute Bridge","2 sets"],
+["Walk","10–20 min"]
+
+];
+
+
+function renderMobility(){
+
+    const container =
+        document.getElementById(
+            "mobilityExercises"
+        );
+
+    container.innerHTML =
+        mobility.map((item,index)=>{
+
+            const id =
+                "mobility"+index;
+
+            return `
+            <div class="exercise">
+
+                <div class="exercise-name">
+                    ${item[0]}
+                </div>
+
+                <span class="target">
+                    ${item[1]}
+                </span>
+
+                <div class="timer-row">
+
+                    <input
+                        type="checkbox"
+                        id="${id}"
+                        data-mobility="true"
+                    >
+
+                    <label for="${id}">
+                        Completed
+                    </label>
+
+                </div>
+
+            </div>
+            `;
+
+        }).join("");
+
+
+    container
+        .querySelectorAll("input")
+        .forEach(box=>{
+
+            const saved =
+                localStorage.getItem(
+                    "workout_"+box.id
+                );
+
+            if(saved === "true"){
+                box.checked = true;
+            }
+
+
+            box.addEventListener(
+                "change",
+                ()=>{
+
+                    localStorage.setItem(
+                        "workout_"+box.id,
+                        box.checked
+                    );
+
+                    updateMobilityProgress();
+
+                }
+            );
+
+        });
+
+
+    updateMobilityProgress();
+
+}
+
+
+function updateMobilityProgress(){
+
+    const boxes =
+        document.querySelectorAll(
+            '[data-mobility="true"]'
+        );
+
+    let completed = 0;
+
+    boxes.forEach(box=>{
+
+        if(box.checked){
+            completed++;
+        }
+
+    });
+
+    document.getElementById(
+        "mobilityProgress"
+    ).textContent =
+        completed +
+        " / " +
+        boxes.length +
+        " completed";
+
+
+    document.getElementById(
+        "mobilityBar"
+    ).style.width =
+        (completed / boxes.length * 100) +
+        "%";
+
+}
+
+
+/* =========================================================
+   WEEK SWITCH
+========================================================= */
+
+let currentWeek = 1;
+
+
+function showWeek(number){
+
+    currentWeek = number;
+
+
+    document
+        .getElementById("week1")
+        .classList.toggle(
+            "active",
+            number === 1
+        );
+
+
+    document
+        .getElementById("week2")
+        .classList.toggle(
+            "active",
+            number === 2
+        );
+
+
+    document
+        .getElementById("weekBtn1")
+        .classList.toggle(
+            "active",
+            number === 1
+        );
+
+
+    document
+        .getElementById("weekBtn2")
+        .classList.toggle(
+            "active",
+            number === 2
+        );
+
+}
+
+
+/* =========================================================
+   RESET CURRENT WEEK
+========================================================= */
+
+function resetCurrentWeek(){
+
+    if(
+        !confirm(
+            "Reset all recorded data for Week " +
+            currentWeek +
+            "?"
+        )
+    ){
+        return;
+    }
+
+
+    const week =
+        document.getElementById(
+            "week"+currentWeek
+        );
+
+
+    week
+        .querySelectorAll("input")
+        .forEach(input=>{
+
+            localStorage.removeItem(
+                "workout_"+input.id
+            );
+
+            if(input.type === "checkbox"){
+                input.checked = false;
+            }
+            else{
+                input.value = "";
+            }
+
+        });
+
+
+    renderWeek(1);
+    renderWeek(2);
+    updateProgress();
+
+}
+
+
+/* =========================================================
+   RESET EVERYTHING
+========================================================= */
+
+function resetAll(){
+
+    if(
+        !confirm(
+            "Delete ALL workout records and checkboxes?"
+        )
+    ){
+        return;
+    }
+
+
+    Object.keys(localStorage)
+        .filter(key =>
+            key.startsWith("workout_")
+        )
+        .forEach(key =>
+            localStorage.removeItem(key)
+        );
+
+
+    renderWeek(1);
+    renderWeek(2);
+    renderMobility();
+    updateProgress();
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderWeek(1);
+renderWeek(2);
+renderMobility();
+updateProgress();
+
+</script>
+
+</body>
+</html>
